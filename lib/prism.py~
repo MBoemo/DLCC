@@ -139,6 +139,7 @@ class Prism_Compiler:
 					dic = self.build_properties_list(node,G.predecessors(node)[1],g,dic)
 		f.close()
 		g.close()
+		print(dic)
 		return dic
 
         def build_properties_list(self,node,blocker,handle,dic):

@@ -12,30 +12,6 @@ ctmc
 
 		return template
 
-	def leaf_module(self,track):
-
-		track = self.correct_1(track)
-		template = '''//-----------------------------------------------------
-
-// %(module_name)s TRACK (%(module_name)sT)
-
-// Maximum track length
-const int %(track_name)s_max;
-
-module %(module_name)sT
-	
-	// States - where we are on the track
-	%(track_name)s_step : [0..%(track_name)s_max] init 0;
-
-	// Walk
-	[] true -> walk_rate : (%(track_name)s_step'= min(%(track_name)s_step+1,%(track_name)s_max));
-
-endmodule
-
-'''
-
-		return template %dict(track_name = track,module_name = track.upper())
-
 	def single_blocked_module(self,track,blocked_by):
 
 		track = self.correct_1(track)
@@ -66,9 +42,27 @@ module %(module_name)sT
 
 
 endmodule
+
+//-----------------------------------------------------
+
+// %(blocker_module_name)s TRACK (%(blocker)sT)
+
+// Maximum track length
+const int %(blocker)s_max;
+
+module %(blocker)sT
+	
+	// States - where we are on the track
+	%(blocker)s_step : [0..%(blocker)s_max] init 0;
+
+	// Walk
+	[] true -> walk_rate : (%(blocker)s_step'= min(%(blocker)s_step+1,%(blocker)s_max));
+
+endmodule
+
 '''
 		
-		return template %dict(track_name=track,module_name=track.upper(),blocker=blocked_by)
+		return template %dict(track_name=track,module_name=track.upper(),blocker=blocked_by,blocker_module_name=blocked_by.upper())
 	
 	def double_blocked_module(self,track,blocked_by_one,blocked_by_two):
 
@@ -100,8 +94,43 @@ module %(module_name)sT
 -> walk_rate : (%(track_name)s_walk'=false);
 
 endmodule
+
+//-----------------------------------------------------
+
+// %(blocker1_module_name)s TRACK (%(blocker1)sT)
+
+// Maximum track length
+const int %(blocker1)s_max;
+
+module %(blocker1)sT
+	
+	// States - where we are on the track
+	%(blocker1)s_step : [0..%(blocker1)s_max] init 0;
+
+	// Walk
+	[] true -> walk_rate : (%(blocker1)s_step'= min(%(blocker1)s_step+1,%(blocker1)s_max));
+
+endmodule
+
+//-----------------------------------------------------
+
+// %(blocker2_module_name)s TRACK (%(blocker2)sT)
+
+// Maximum track length
+const int %(blocker2)s_max;
+
+module %(blocker2)sT
+	
+	// States - where we are on the track
+	%(blocker2)s_step : [0..%(blocker2)s_max] init 0;
+
+	// Walk
+	[] true -> walk_rate : (%(blocker2)s_step'= min(%(blocker2)s_step+1,%(blocker2)s_max));
+
+endmodule
+
 '''
-		return template %dict(track_name = track,module_name = track.upper(),blocker1 = blocked_by_one,blocker2 = blocked_by_two)
+		return template %dict(track_name = track,module_name = track.upper(),blocker1 = blocked_by_one,blocker1_module_name=blocked_by_one.upper(),blocker2 = blocked_by_two,blocker2_module_name=blocked_by_two.upper())
 
 	def correct_1(self,track_name):
 		# Converts a track name of '1' into 'ONE'
@@ -119,11 +148,13 @@ class Prism_Compiler:
 		pt = Prism_Templates()
 		self.pt = pt
 
+	# function that moves through the graph and 
+	def 
+
 	def build_prism_code(self,G):
 		nodes = G.out_degree(G.nodes()) # number of nodes a given node connects to, i.e. {'y': 1, 'x': 0, 'z': 1, '1_1': 1}.  So 'x' is the terminal node.
 		# open a file for the prism code and properties list, and print the preamble on them
 		f = open('out/prism_code.sm','w')
-		g = open('out/properties_list.csl','w')
 		f.write(self.pt.preamble())
 		dic = []
 		for node in nodes:
@@ -132,14 +163,9 @@ class Prism_Compiler:
         		else:
                 		if len(G.predecessors(node)) == 1: # if a node has one track feeding into it...
                         		f.write(self.pt.single_blocked_module(node,G.predecessors(node)[0])) # then it's only blocked by one track... 
-					dic = self.build_properties_list(node,G.predecessors(node)[0],g,dic) # 
-                		elif len(G.predecessors(node)) == 2:
-                       			f.write(self.pt.double_blocked_module(node,G.predecessors(node)[0],G.predecessors(node)[1]))
-					dic = self.build_properties_list(node,G.predecessors(node)[0],g,dic)
-					dic = self.build_properties_list(node,G.predecessors(node)[1],g,dic)
+                		elif len(G.predecessors(node)) == 2: # if a node has two tracks feeding into it...
+                       			f.write(self.pt.double_blocked_module(node,G.predecessors(node)[0],G.predecessors(node)[1])) # then it's blocked by two tracks.
 		f.close()
-		g.close()
-		print(dic)
 		return dic
 
         def build_properties_list(self,node,blocker,handle,dic):
@@ -149,65 +175,4 @@ class Prism_Compiler:
 		handle.write(template %dict(blocker_temp = blocker,track_name = node))
 		dic.append(node + '_max')
 		return dic
-		
 
-class Evaluate_Track_Lengths:
-
-	def __init__(self):
-                pt = Prism_Templates()
-                self.pt = pt
-
-
-	def build_variables(self,G):
-		prism_variables = []
-		nodes = G.out_degree(G.nodes())
-		for node in nodes:
-			prism_variables.append(self.pt.correct_1(node)+'_max')
-		return prism_variables
-
-	def execute_prism(self,variable_list,cmd_arg,dic):
-		from lib.xml_input import Inputs
-		i = Inputs()
-		arg_list = i.extract_prism(cmd_arg)
-		import os
-		import sys
-		import subprocess
-		variable_lengths = {}
-		for variable in variable_list:
-			variable_lengths[variable] = int(arg_list[2])
-		cont = 1
-		counter = 1
-		while cont == 1:
-		
-			variable_range_string = ''
-			for variable in variable_list:
-				variable_range_string = variable_range_string + variable+'='+str(variable_lengths[variable])+','
-			variable_range_string = variable_range_string[:-1]
-			cmd = arg_list[0] +  ' out/prism_code.sm out/properties_list.csl -const ' + variable_range_string +' -exportresults out/prism_results.txt,csv'
-			FNULL = open(os.devnull,'w')
-			subprocess.call([cmd],shell=True,stdout=FNULL)
-			FNULL.close()
-
-			modify_lengths = self.iteratively_check_results(dic,arg_list[3])
-			for variable in modify_lengths:
-				variable_lengths[variable] = variable_lengths[variable] + 1
-			if not modify_lengths:
-				cont = 0
-			sys.stdout.flush()
-			sys.stdout.write('Iteration ' + str(counter) + '\r')
-			counter = counter + 1
-		return variable_lengths
-			
-
-	def iteratively_check_results(self,dic,tolerance):
-		f = open('out/prism_results.txt','r')
-		g = f.readlines()
-		counter = 0
-		to_change = []
-		for line in g:
-			if line[0] == '0' or line[0] == '1':
-				if float(line) > float(tolerance):
-					to_change.append(dic[counter])
-				counter = counter + 1
-		f.close()
-		return to_change
