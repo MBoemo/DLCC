@@ -1,0 +1,11 @@
+"P=? [ F (ONE_1_step=ONE_1_max)&(x_step>=ONE_1_x_intersection) ]:"
+Result
+0.025741055614609244
+
+"P=? [ F (y_step=y_max)&(ONE_1_step>=y_ONE_1_intersection) ]:"
+Result
+0.03193587105624143
+
+"P=? [ F (z_step=z_max)&(ONE_1_step>=z_ONE_1_intersection) ]:"
+Result
+0.05838477366255146

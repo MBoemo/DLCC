@@ -1,0 +1,24 @@
+ctmc
+
+// Forward walk rate
+// Assumption: All motors have the same walk rate
+const double walk_rate = 1;
+
+// A TRACK (AT)
+
+// Maximum track length
+const int at_max;// = 2;
+
+// Intersections
+const int at_one_t_intersection = 1;
+const int at_one_b_intersection = at_max;
+
+module AT
+	
+	// States - where we are on the track
+	at_step : [0..at_max] init 0;
+	
+	// Walk
+	[at_walk] true -> walk_rate : (at_step'= min(at_step+1,at_max));
+
+endmodule
