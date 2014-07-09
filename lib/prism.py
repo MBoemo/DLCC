@@ -149,7 +149,7 @@ class Prism_Compiler:
 		self.pt = pt
 
 	# function that moves through the graph and 
-	def 
+	#def 
 
 	def build_prism_code(self,G):
 		nodes = G.out_degree(G.nodes()) # number of nodes a given node connects to, i.e. {'y': 1, 'x': 0, 'z': 1, '1_1': 1}.  So 'x' is the terminal node.
