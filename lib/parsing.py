@@ -12,15 +12,15 @@ class Parsing:
 
 
 
-	def tree_build(self,dummy_list,parent_Name,parent_Names,tree):
+	def tree_build(self,dummy_list,parent_Name,parent_Names,tree_nested_logic_statement):
 		if ',' not in dummy_list[-1]:
 			if len(dummy_list) == 2:
 				key = dummy_list[-1]
 				if len(key) == 2:
-					tree.create_node(key[0][0],key[0][0],parent=parent_Name)
-					tree.create_node(key[1],key[1],parent=parent_Name)
+					tree_nested_logic_statement.add_edge(parent_Name,key[0][0])
+					tree_nested_logic_statement.add_edge(parent_Name,key[1])
 				else:
-					tree.create_node(key[0],key[0],parent=parent_Name)
+					tree_nested_logic_statement.add_edge(parent_Name,key[0])
 
 		else:
 			comma_index = dummy_list[1].index(',')
@@ -28,7 +28,7 @@ class Parsing:
 			second_partition = dummy_list[1][comma_index + 1:]
 			first_ID = self.check_duplicates(str(first_partition[0]),parent_Names)
 			second_ID = self.check_duplicates(str(second_partition[0]),parent_Names)
-			tree.create_node(str(first_partition[0]),first_ID,parent=parent_Name)
-			tree.create_node(str(second_partition[0]),second_ID,parent=parent_Name)
-			self.tree_build(first_partition,first_ID,parent_Names,tree)
-			self.tree_build(second_partition,second_ID,parent_Names,tree)
+			tree_nested_logic_statement.add_edge(parent_Name,first_ID)
+			tree_nested_logic_statement.add_edge(parent_Name,second_ID)
+			self.tree_build(first_partition,first_ID,parent_Names,tree_nested_logic_statement)
+			self.tree_build(second_partition,second_ID,parent_Names,tree_nested_logic_statement)

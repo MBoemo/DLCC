@@ -12,24 +12,24 @@ class Topology:
 		self.Node = Node
 
 	
-	def fun_gate_topology(self,tree_smallSubtree,tree_nested_logic_statement,inputs,gate,counter):
+	def fun_gate_topology(self,tree_smallSubtree,tree_nested_logic_statement,inputs,gate,int_counter):
 		str_gate_type = gate.translate(None,'0')
 		if str_gate_type == 'Not':
-			tree_smallSubtree.create_node('1_'+str(counter),'1_'+str(counter)) 
-		        tree_smallSubtree.create_node(inputs[0],inputs[0],parent='1_'+str(counter))
-		        counter = counter + 1
+			tree_smallSubtree.create_node('1_'+str(int_counter),'1_'+str(int_counter)) 
+		        tree_smallSubtree.create_node(inputs[0],inputs[0],parent='1_'+str(int_counter))
+		        int_counter = int_counter + 1
 		if str_gate_type == 'Or':
-			tree_smallSubtree.create_node('1_'+str(counter),'1_'+str(counter)) 
-			tree_smallSubtree.create_node('1_'+str(counter+1),'1_'+str(counter+1),parent='1_'+str(counter))
-		        tree_smallSubtree.create_node(inputs[0],inputs[0],parent='1_'+str(counter+1))
-		        tree_smallSubtree.create_node(inputs[1],inputs[1],parent='1_'+str(counter+1))
-		        counter = counter + 2
+			tree_smallSubtree.create_node('1_'+str(int_counter),'1_'+str(int_counter)) 
+			tree_smallSubtree.create_node('1_'+str(int_counter+1),'1_'+str(int_counter+1),parent='1_'+str(int_counter))
+		        tree_smallSubtree.create_node(inputs[0],inputs[0],parent='1_'+str(int_counter+1))
+		        tree_smallSubtree.create_node(inputs[1],inputs[1],parent='1_'+str(int_counter+1))
+		        int_counter = int_counter + 2
 		if str_gate_type == 'And':
 			tree_smallSubtree.create_node(inputs[1],inputs[1]) 
-			tree_smallSubtree.create_node('1_'+str(counter),'1_'+str(counter),parent=inputs[1])
-		        tree_smallSubtree.create_node(inputs[0],inputs[0],parent='1_'+str(counter))
-		        counter = counter + 1
-		return counter
+			tree_smallSubtree.create_node('1_'+str(int_counter),'1_'+str(int_counter),parent=inputs[1])
+		        tree_smallSubtree.create_node(inputs[0],inputs[0],parent='1_'+str(int_counter))
+		        int_counter = int_counter + 1
+		return int_counter
 
 
 	def fun_nested_logic_tree_2_topology_tree(self,tree_topology,tree_nested_logic_statement,int_running_label):
@@ -40,9 +40,9 @@ class Topology:
 		if tree_topology.root == None: # if there's nothing in tree_topology, we're at the base case (first case).  so the small subtree we generated will be the first tree
 			tree_topology = tree_smallSubtree # make the subtree tree_topology
 			bool_baseCase = True # flip this to true so we don't try to replace gates with the subtree
-		
-		for leaf in tree_topology.leaves(tree_topology.root): # look through the leaves of tree_topology to see if we still have a gate
-			if leaf in ['Not','Or','And']: # if we do...
+
+		for node in tree_topology.leaves(tree_topology.root): # look through the leaves of tree_topology to see if we still have a gate
+			if leaf.translate(None,'0') in ['Not','Or','And']: # if we do...
 				if bool_baseCase == False: # and if it isn't the base case...
 					tree_topology.paste(tree_topology.parent(leaf).identifier,tree_smallSubtree) # swap the subtree for the gate
 					tree_topology.remove_node(leaf) # remove the gate node
