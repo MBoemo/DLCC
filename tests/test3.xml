@@ -12,8 +12,7 @@
 	</Topology>
 	
 	<ModelChecking>
-		<PathToPrism>/home/boemo/prism-4.1.beta2-linux64/bin/prism</PathToPrism>
-		<SmartIntersect>yes</SmartIntersect> <!-- this doesn't do anything yet -->
+		<PathToPrism>prism-4.1.beta2-linux64/bin/prism</PathToPrism>
 		<InitialiseLength>2</InitialiseLength>
 		<MaxErrTolerance>0.10</MaxErrTolerance> 
 	</ModelChecking>

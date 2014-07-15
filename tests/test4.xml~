@@ -12,7 +12,7 @@
 	</Topology>
 	
 	<ModelChecking>
-		<PathToPrism>/home/michael/prism-4.1.beta2-linux64/bin/prism</PathToPrism>
+		<PathToPrism>prism-4.1.beta2-linux64/bin/prism</PathToPrism>
 		<SmartIntersect>yes</SmartIntersect> <!-- this doesn't do anything yet -->
 		<InitialiseLength>1</InitialiseLength>
 		<MaxErrTolerance>0.10</MaxErrTolerance> 
