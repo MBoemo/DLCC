@@ -1,5 +1,5 @@
 import sys
-#import networkx as nx
+
 #import matplotlib.pyplot as plt # make a graph plotting function that calls this
 
 ####
@@ -18,8 +18,22 @@ G_nested_logic_statement = p.fun_build_parsed_logic_graph(lst_nested_logic_state
 
 # compute topology
 from lib.topology import Topology
-t = Topology
-t.fun_nestedLogicDigraph_2_topologyDigraph(G_nested_logic_statement)
+t = Topology()
+G_topology_Digraph = t.fun_nestedLogicDigraph_2_topologyDigraph(G_nested_logic_statement)
+
+
+import networkx as nx
+lst_inDegree = G_topology_Digraph.in_degree().items()
+lst_outDegree = G_topology_Digraph.out_degree().items()
+
+
+for node in lst_outDegree:
+	if node[1] == 0:
+		terminal_node = node[0]
+for node in lst_inDegree:
+	if node[1] == 0:
+		print([p for p in nx.all_simple_paths(G_topology_Digraph,source=node[0],target=terminal_node)])
+
 
 
 

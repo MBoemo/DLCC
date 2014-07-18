@@ -1,5 +1,5 @@
 import sys
-#import networkx as nx
+
 #import matplotlib.pyplot as plt # make a graph plotting function that calls this
 
 ####
@@ -19,7 +19,8 @@ G_nested_logic_statement = p.fun_build_parsed_logic_graph(lst_nested_logic_state
 # compute topology
 from lib.topology import Topology
 t = Topology()
-t.fun_nestedLogicDigraph_2_topologyDigraph(G_nested_logic_statement)
+G_topology_Digraph = t.fun_nestedLogicDigraph_2_topologyDigraph(G_nested_logic_statement)
+
 
 
 
