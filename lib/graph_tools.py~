@@ -3,7 +3,6 @@ class Graph_Tools:
 	def fun_save_graph(self,graph,file_name):
 		
 		import matplotlib.pyplot as plt
-		import networkx as nx
 		
 		plt.figure()
 		pos=nx.spring_layout(graph,iterations=10)

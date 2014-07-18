@@ -16,6 +16,28 @@ from lib.parsing import Parsing
 p = Parsing()
 G_nested_logic_statement = p.fun_build_parsed_logic_graph(lst_nested_logic_statement)
 
+# compute topology
+from lib.topology import Topology
+t = Topology
+t.fun_nestedLogicDigraph_2_topologyDigraph(G_nested_logic_statement)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
