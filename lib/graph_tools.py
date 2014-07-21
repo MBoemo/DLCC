@@ -2,6 +2,8 @@ class Graph_Tools:
 
 	def fun_save_graph(self,graph,file_name):
 		
+		# prints the graph you hand it as a .png file in the directory specified by file_name
+
 		import matplotlib.pyplot as plt
 		import networkx as nx
 		

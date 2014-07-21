@@ -21,7 +21,7 @@ from lib.topology import Topology
 t = Topology()
 G_topology_Digraph = t.fun_nestedLogicDigraph_2_topologyDigraph(G_nested_logic_statement)
 
-
+# find lengths with Prism
 
 
 

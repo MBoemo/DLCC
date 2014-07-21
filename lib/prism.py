@@ -149,7 +149,27 @@ class Prism_Compiler:
 		self.pt = pt
 
 	# function that moves through the graph and 
-	#def 
+	def build_prism_code(self,G):
+
+		from sets import Set
+
+		lst_leafNodeParents = []
+		lst_inDegree = G.in_degree().items()
+		
+		for node in lst_inDegree:
+			if node[1] == 0: # find leaf nodes
+				lst_leafNodeParents.append(G.successors(node[0]))
+		lst_leafNodeParents = Set(lst_leafNodeParents)
+
+		for parent in lst_leaf_NodeParents:
+			
+
+
+
+
+
+
+
 
 	def build_prism_code(self,G):
 		nodes = G.out_degree(G.nodes()) # number of nodes a given node connects to, i.e. {'y': 1, 'x': 0, 'z': 1, '1_1': 1}.  So 'x' is the terminal node.
