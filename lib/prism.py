@@ -1,6 +1,10 @@
 class Prism_Templates:
 
-	def preamble(self):
+	def single_blocked_module(self,track,blocked_by):
+
+		track = self.correct_1(track)
+		blocked_by = self.correct_1(blocked_by)
+
 		template = '''//Prism model generated automatically by Bellerophon
 
 // Forward walk rate
@@ -8,16 +12,8 @@ const double walk_rate = 1;
 
 ctmc
 
-//-----------------------------------------------------'''
+//-----------------------------------------------------
 
-		return template
-
-	def single_blocked_module(self,track,blocked_by):
-
-		track = self.correct_1(track)
-		blocked_by = self.correct_1(blocked_by)
-
-		template = '''//-----------------------------------------------------
 // %(module_name)s TRACK (%(module_name)sT)
 
 // Maximum track length
@@ -70,7 +66,14 @@ endmodule
 		blocked_by_one = self.correct_1(blocked_by_one)
 		blocked_by_two = self.correct_1(blocked_by_two)
 
-		template = '''//-----------------------------------------------------
+		template = '''//Prism model generated automatically by Bellerophon
+
+// Forward walk rate
+const double walk_rate = 1;
+
+ctmc
+
+//-----------------------------------------------------
 
 // %(module_name)s TRACK (%(module_name)sT)
 
@@ -132,6 +135,21 @@ endmodule
 '''
 		return template %dict(track_name = track,module_name = track.upper(),blocker1 = blocked_by_one,blocker1_module_name=blocked_by_one.upper(),blocker2 = blocked_by_two,blocker2_module_name=blocked_by_two.upper())
 
+       
+	def fun_build_singleBlock_properties_list(self,node,blocker):
+		node = self.correct_1(node)
+		blocker = self.correct_1(blocker)
+		template = 'P=? [ F (%(blocker1)s_step=%(blocker1)s_max)&(%(track_name)s_step>=%(blocker1)s_%(track_name)s_intersection) ]\n'
+		return template %dict(blocker1 = blocker,track_name = node)
+
+
+	def fun_build_doubleBlock_properties_list(self,node,blocker_1,blocker_2):
+		node = self.correct_1(node)
+		blocker = self.correct_1(blocker)
+		template = 'P=? [ F (%(blocker1)s_step=%(blocker1)s_max)&(%(track_name)s_step>=%(blocker1)s_%(track_name)s_intersection)  | (%(blocker1)s_step=%(blocker2)s_max)&(%(track_name)s_step>=%(blocker2)s_%(track_name)s_intersection) ]\n'
+		return template %dict(blocker1 = blocker_1,blocker2 = blocker_2,track_name = node)
+
+
 	def correct_1(self,track_name):
 		# Converts a track name of '1' into 'ONE'
 		if track_name[0] == '1':
@@ -148,9 +166,9 @@ class Prism_Compiler:
 		pt = Prism_Templates()
 		self.pt = pt
 
-	# function that moves through the graph and 
-	def build_prism_code(self,G):
 
+	def fun_build_prism_code(self,G):
+	# takes the level above the leaf nodes 
 		from sets import Set
 
 		lst_leafNodeParents = []
@@ -162,37 +180,26 @@ class Prism_Compiler:
 		lst_leafNodeParents = Set(lst_leafNodeParents)
 
 		for parent in lst_leaf_NodeParents:
-			
+			if len(G.predecessors(parent)) == 1:
+				fHandle_f = open('out/prism_code.sm','w')
+				fHandle_g = open('out/properties_list.csl','w')
+				fHandle_f.write(self.pt.single_blocked_module(parent,G.predecessors(parent)[0]))
+				fHandle_g.write(self.pt.fun_build_singleBlock_properties_list(parent,G.predecessors(parent)[0]))
+				fHandle_f.close()
+				fHandle_g.close()
+				# recursive 
+
+			elif len(G.predecessors(parent)) == 2:
+				fHandle_f = open('out/prism_code.sm','w')
+				fHandle_g = open('out/properties_list.csl','w')
+				fHandle_f.write(self.pt.single_blocked_module(parent,G.predecessors(parent)[0]))
+				fHandle_g.write(self.pt.fun_build_singleBlock_properties_list(parent,G.predecessors(parent)[0]))
+				fHandle_f.close()
+				fHandle_g.close()
+				# recursive fun
 
 
 
 
 
-
-
-
-	def build_prism_code(self,G):
-		nodes = G.out_degree(G.nodes()) # number of nodes a given node connects to, i.e. {'y': 1, 'x': 0, 'z': 1, '1_1': 1}.  So 'x' is the terminal node.
-		# open a file for the prism code and properties list, and print the preamble on them
-		f = open('out/prism_code.sm','w')
-		f.write(self.pt.preamble())
-		dic = []
-		for node in nodes:
-        		if not G.predecessors(node): # if a node has no predecessors... 
-                		f.write(self.pt.leaf_module(node)) # then it's a leaf node, so write that module for it.
-        		else:
-                		if len(G.predecessors(node)) == 1: # if a node has one track feeding into it...
-                        		f.write(self.pt.single_blocked_module(node,G.predecessors(node)[0])) # then it's only blocked by one track... 
-                		elif len(G.predecessors(node)) == 2: # if a node has two tracks feeding into it...
-                       			f.write(self.pt.double_blocked_module(node,G.predecessors(node)[0],G.predecessors(node)[1])) # then it's blocked by two tracks.
-		f.close()
-		return dic
-
-        def build_properties_list(self,node,blocker,handle,dic):
-		node = self.pt.correct_1(node)
-		blocker = self.pt.correct_1(blocker)
-		template = 'P=? [ F (%(blocker_temp)s_step=%(blocker_temp)s_max)&(%(track_name)s_step>=%(blocker_temp)s_%(track_name)s_intersection) ]\n'
-		handle.write(template %dict(blocker_temp = blocker,track_name = node))
-		dic.append(node + '_max')
-		return dic
 
