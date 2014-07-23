@@ -145,7 +145,8 @@ endmodule
 
 	def fun_build_doubleBlock_properties_list(self,node,blocker_1,blocker_2):
 		node = self.correct_1(node)
-		blocker = self.correct_1(blocker)
+		blocker_1 = self.correct_1(blocker_1)
+		blocker_2 = self.correct_1(blocker_2)
 		template = 'P=? [ F (%(blocker1)s_step=%(blocker1)s_max)&(%(track_name)s_step>=%(blocker1)s_%(track_name)s_intersection)  | (%(blocker1)s_step=%(blocker2)s_max)&(%(track_name)s_step>=%(blocker2)s_%(track_name)s_intersection) ]\n'
 		return template %dict(blocker1 = blocker_1,blocker2 = blocker_2,track_name = node)
 
@@ -167,9 +168,14 @@ class Prism_Compiler:
 		self.pt = pt
 
 
-	def fun_build_prism_code(self,G):
+	def fun_build_prism_code(self,G,hash_track_input_lengths):
 	# takes the level above the leaf nodes 
+
+	### hash_track_input_lengths will be the hash of track lengths that we continually update
 		from sets import Set
+		import os
+		import sys
+		import subprocess
 
 		lst_leafNodeParents = []
 		lst_inDegree = G.in_degree().items()
@@ -177,26 +183,47 @@ class Prism_Compiler:
 		for node in lst_inDegree:
 			if node[1] == 0: # find leaf nodes
 				lst_leafNodeParents.append(G.successors(node[0]))
-		lst_leafNodeParents = Set(lst_leafNodeParents)
+		lst_leafNodeParents = Set(lst_leafNodeParents[0])
 
-		for parent in lst_leaf_NodeParents:
+		for parent in lst_leafNodeParents:
 			if len(G.predecessors(parent)) == 1:
+
+				# build prism code
 				fHandle_f = open('out/prism_code.sm','w')
 				fHandle_g = open('out/properties_list.csl','w')
 				fHandle_f.write(self.pt.single_blocked_module(parent,G.predecessors(parent)[0]))
 				fHandle_g.write(self.pt.fun_build_singleBlock_properties_list(parent,G.predecessors(parent)[0]))
 				fHandle_f.close()
 				fHandle_g.close()
-				# recursive 
+				
+				# run prism
+				cmd = 'prism-4.1.beta2-linux64/bin/prism out/prism_code.sm out/properties_list.csl -const ' + self.pt.correct_1(parent)+'_max=1:20'+','+self.pt.correct_1(G.predecessors(parent)[0])+'_max='+str(2) + ' -exportresults out/prism_results.txt,csv'
+				FNULL = open(os.devnull,'w')
+				subprocess.call([cmd],shell=True,stdout=FNULL)
+				FNULL.close()
 
 			elif len(G.predecessors(parent)) == 2:
+			
+				# build prism code
 				fHandle_f = open('out/prism_code.sm','w')
 				fHandle_g = open('out/properties_list.csl','w')
-				fHandle_f.write(self.pt.single_blocked_module(parent,G.predecessors(parent)[0]))
-				fHandle_g.write(self.pt.fun_build_singleBlock_properties_list(parent,G.predecessors(parent)[0]))
+				fHandle_f.write(self.pt.double_blocked_module(parent,G.predecessors(parent)[0],G.predecessors(parent)[1]))
+				fHandle_g.write(self.pt.fun_build_doubleBlock_properties_list(parent,G.predecessors(parent)[0],G.predecessors(parent)[1]))
 				fHandle_f.close()
 				fHandle_g.close()
-				# recursive fun
+				
+				# run prism
+				cmd = 'prism-4.1.beta2-linux64/bin/prism out/prism_code.sm out/properties_list.csl -const ' + self.pt.correct_1(parent)+'_max=1:20'+','+self.pt.correct_1(G.predecessors(parent)[0])+'_max='+str(2)+','+self.pt.correct_1(G.predecessors(parent)[1])+'_max='+str(2) + ' -exportresults out/prism_results.txt,csv'
+				#FNULL = open(os.devnull,'w')
+				#subprocess.call([cmd],shell=True,stdout=FNULL)
+				subprocess.call([cmd],shell=True)
+				#FNULL.close()
+
+	
+
+
+
+
 
 
 
