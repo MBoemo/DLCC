@@ -1,1 +1,1 @@
-P=? [ F (y_step=y_max)&(ONE_2_step>=y_ONE_2_intersection)  | (y_step=z_max)&(ONE_2_step>=z_ONE_2_intersection) ]
+P=? [ F (y_step=y_max)&(ONE_1_step>=y_ONE_1_intersection)  | (y_step=x_max)&(ONE_1_step>=x_ONE_1_intersection) ]

@@ -167,6 +167,20 @@ class Prism_Compiler:
 		pt = Prism_Templates()
 		self.pt = pt
 
+	def fun_iterate_through_graph(self,G):
+
+		hash_track_lengths = {}
+
+		lst_leafNodeParents = []
+		lst_inDegree = G.in_degree().items()
+		
+		for node in lst_inDegree:
+			if node[1] == 0: # find leaf nodes
+				hash_track_lengths[node[0]] = 2 # set the length of the leaf nodes = 2
+				
+		hash_track_lengths = self.fun_build_prism_code(G,hash_track_lengths)
+		
+		return hash_track_lengths
 
 	def fun_build_prism_code(self,G,hash_track_input_lengths):
 	# takes the level above the leaf nodes 
@@ -202,6 +216,11 @@ class Prism_Compiler:
 				subprocess.call([cmd],shell=True,stdout=FNULL)
 				FNULL.close()
 
+				# delete the nodes that we used
+				str_child1 = G.predecessors(parent)[0]
+				G.remove_node(str_child1) # child 1
+
+
 			elif len(G.predecessors(parent)) == 2:
 			
 				# build prism code
@@ -213,13 +232,43 @@ class Prism_Compiler:
 				fHandle_g.close()
 				
 				# run prism
-				cmd = 'prism-4.1.beta2-linux64/bin/prism out/prism_code.sm out/properties_list.csl -const ' + self.pt.correct_1(parent)+'_max=1:20'+','+self.pt.correct_1(G.predecessors(parent)[0])+'_max='+str(2)+','+self.pt.correct_1(G.predecessors(parent)[1])+'_max='+str(2) + ' -exportresults out/prism_results.txt,csv'
-				#FNULL = open(os.devnull,'w')
-				#subprocess.call([cmd],shell=True,stdout=FNULL)
-				subprocess.call([cmd],shell=True)
-				#FNULL.close()
+				cmd = 'prism-4.1.beta2-linux64/bin/prism out/prism_code.sm out/properties_list.csl -const ' + self.pt.correct_1(parent)+'_max=1:20'+','+self.pt.correct_1(G.predecessors(parent)[0])+'_max='+str(hash_track_input_lengths[self.pt.correct_1(G.predecessors(parent)[0])])+','+self.pt.correct_1(G.predecessors(parent)[1])+'_max='+str(hash_track_input_lengths[self.pt.correct_1(G.predecessors(parent)[1])]) + ' -exportresults out/prism_results.txt,csv'
+				FNULL = open(os.devnull,'w')
+				subprocess.call([cmd],shell=True,stdout=FNULL)
+				#subprocess.call([cmd],shell=True)
+				FNULL.close()
 
+				# delete the nodes that we used
+				str_child1 = G.predecessors(parent)[0]
+				str_child2 = G.predecessors(parent)[1]
+				G.remove_node(str_child1) # child 1
+				G.remove_node(str_child2) # child 2
+
+
+
+			hash_track_input_lengths[self.pt.correct_1(parent)] = self.fun_read_prism_output()
 	
+		if len(G.nodes()) >= 2:
+			self.fun_build_prism_code(G,hash_track_input_lengths)
+
+		return hash_track_input_lengths
+
+
+
+	def fun_read_prism_output(self):
+		fHandle_f = open('out/prism_results.txt','r')
+		fHandle_g = fHandle_f.readlines()
+		
+		for str_line in fHandle_g[1:]:
+			if float(str_line.split(',')[1]) < 0.05:
+				int_optimal_track_length = int(str_line.split(',')[0])
+				break
+
+			# else:
+				# some error message saying we didn't reach the desired precision 	
+
+		return int_optimal_track_length
+		
 
 
 

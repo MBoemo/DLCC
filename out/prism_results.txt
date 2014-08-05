@@ -1,4 +1,4 @@
-ONE_2_max, Result
+ONE_1_max, Result
 1, 1.0
 2, 1.0
 3, 0.8148148148148147
