@@ -169,6 +169,8 @@ class Prism_Compiler:
 
 	def fun_iterate_through_graph(self,G):
 
+		G_temp = G.copy()
+
 		hash_track_lengths = {}
 
 		lst_leafNodeParents = []
@@ -178,7 +180,7 @@ class Prism_Compiler:
 			if node[1] == 0: # find leaf nodes
 				hash_track_lengths[node[0]] = 2 # set the length of the leaf nodes = 2
 				
-		hash_track_lengths = self.fun_build_prism_code(G,hash_track_lengths)
+		hash_track_lengths = self.fun_build_prism_code(G_temp,hash_track_lengths)
 		
 		return hash_track_lengths
 
@@ -248,7 +250,7 @@ class Prism_Compiler:
 
 			hash_track_input_lengths[self.pt.correct_1(parent)] = self.fun_read_prism_output()
 	
-		if len(G.nodes()) >= 2:
+		if len(G.nodes()) >= 2: # if you have two or more nodes left in the graph, we haven't reached the root so keep going
 			self.fun_build_prism_code(G,hash_track_input_lengths)
 
 		return hash_track_input_lengths

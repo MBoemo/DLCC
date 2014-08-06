@@ -25,13 +25,11 @@ G_topology_Digraph = t.fun_nestedLogicDigraph_2_topologyDigraph(G_nested_logic_s
 from lib.prism import Prism_Compiler
 pc = Prism_Compiler()
 hash_track_lengths = pc.fun_iterate_through_graph(G_topology_Digraph)
+
 print(hash_track_lengths)
 
+# plot final track layout
+from lib.geometry import Track_Layout
+tl = Track_Layout()
+tl.plot_final(G_topology_Digraph,hash_track_lengths)
 
-
-
-#print('Creating circuit design...')
-#from lib.geometry import Track_Layout
-#tl = Track_Layout()
-#tl.plot_final(G_topology_Digraph,hash_track_lengths)
-#print('Done.')

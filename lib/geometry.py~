@@ -10,7 +10,7 @@ class Track_Layout:
 		from lib.prism import Prism_Templates
 		pt = Prism_Templates()
 
-		length = int(track_lengths[pt.correct_1(node) + '_max']) + 1
+		length = int(track_lengths[pt.correct_1(node)]) + 1
 		x = [x + int(starting_coords[0]) for x in range(length)]
 		y = [int(starting_coords[1])]*length
 		area = np.pi*(100)
@@ -31,10 +31,13 @@ class Track_Layout:
 		                self.plot_tracks(G,new_node[0],[y[0],x[1]],direction*-1,track_lengths)
 
 	def plot_final(self,G_refined,track_lengths):
+		print('Creating circuit design...')
 		import networkx as nx
 		for node in G_refined.nodes():
 			if not G_refined.successors(node):
 				terminal_node = node
 		self.plt.figure()
 		self.plot_tracks(G_refined,terminal_node,[0,0],1,track_lengths)
+		self.plt.axes().set_aspect('equal')
 		self.plt.savefig("out/track_design.png")
+		print('Done.')
