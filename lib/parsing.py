@@ -34,7 +34,7 @@ class Parsing:
 			self.fun_recursive_add_to_logic_graph(first_partition,first_ID,parent_Names,G_nested_logic_statement)
 			self.fun_recursive_add_to_logic_graph(second_partition,second_ID,parent_Names,G_nested_logic_statement)
 
-	def fun_build_parsed_logic_graph(self,lst_nested_logic_statement):
+	def fun_build_parsed_logic_graph(self,lst_nested_logic_statement,str_time):
 		
 		import networkx as nx
 		from lib.graph_tools import Graph_Tools
@@ -48,7 +48,7 @@ class Parsing:
 		parent_Name = str(lst_nested_logic_statement[0][0]) 
 		self.fun_recursive_add_to_logic_graph(lst_nested_logic_statement[0],parent_Name,parent_Names,G_nested_logic_statement) # call the recursive funciton until we're done
 	
-		gt.fun_save_graph(G_nested_logic_statement,'nested_logic_statement')
+		gt.fun_save_graph(G_nested_logic_statement,'nested_logic_statement',str_time)
 		
 		print('Done.')
 

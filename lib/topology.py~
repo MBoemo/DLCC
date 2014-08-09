@@ -65,7 +65,7 @@ class Topology:
 
 		print('Attempting to refine topology...')
 
-		G_topology_refined = G_topology_Digraph
+		G_topology_refined = G_topology_Digraph # make a new graph we can edit for refinement
 		bool_topologyRefined = False # we'll switch this to true if we actually find any possible refinements
 
 		# Find all paths from 'leaf' nodes to 'root' node
