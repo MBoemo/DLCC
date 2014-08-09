@@ -35,7 +35,7 @@ class Topology:
 		return int_counter
 
 	
-	def fun_nestedLogicDigraph_2_topologyDigraph(self,G_nestedLogicDigraph):
+	def fun_nestedLogicDigraph_2_topologyDigraph(self,G_nestedLogicDigraph,str_time):
 		
 		print('Creating topology digraph...')
 		from lib.graph_tools import Graph_Tools
@@ -49,15 +49,15 @@ class Topology:
 
 				int_counter = self.fun_gate_topology(G_topology_Digraph,G_topology_Digraph.predecessors(node),G_topology_Digraph.successors(node),node,int_counter) # replace it with the appropriate track topology
 		
-		gt.fun_save_graph(G_topology_Digraph,'topology_digraph')
+		gt.fun_save_graph(G_topology_Digraph,'topology_digraph',str_time)
 		
 		print('Done.')
 
-		self.fun_refineTopology(G_topology_Digraph) # refine topology - may want to make this an option
+		self.fun_refineTopology(G_topology_Digraph,str_time) # refine topology - may want to make this an option
 
 		return G_topology_Digraph
 
-	def fun_refineTopology(self,G_topology_Digraph):
+	def fun_refineTopology(self,G_topology_Digraph,str_time):
 		
 		import networkx as nx
 		from lib.graph_tools import Graph_Tools
@@ -95,7 +95,7 @@ class Topology:
 
 		if bool_topologyRefined == True: # if we've done any refinement, say so and save it
 			print('Identified simplified topology.  Condensing network...')
-			gt.fun_save_graph(G_topology_refined,'topology_refinement')
+			gt.fun_save_graph(G_topology_refined,'topology_refinement',str_time)
 		elif bool_topologyRefined == False:
 			print('No topology refinement possible.')
 		

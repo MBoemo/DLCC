@@ -205,15 +205,15 @@ class Prism_Compiler:
 			if len(G.predecessors(parent)) == 1:
 
 				# build prism code
-				fHandle_f = open('out/prism_code.sm','w')
-				fHandle_g = open('out/properties_list.csl','w')
+				fHandle_f = open('temp/prism_code.sm','w')
+				fHandle_g = open('temp/properties_list.csl','w')
 				fHandle_f.write(self.pt.single_blocked_module(parent,G.predecessors(parent)[0]))
 				fHandle_g.write(self.pt.fun_build_singleBlock_properties_list(parent,G.predecessors(parent)[0]))
 				fHandle_f.close()
 				fHandle_g.close()
 				
 				# run prism
-				cmd = 'prism-4.1.beta2-linux64/bin/prism out/prism_code.sm out/properties_list.csl -const ' + self.pt.correct_1(parent)+'_max=1:20'+','+self.pt.correct_1(G.predecessors(parent)[0])+'_max='+str(2) + ' -exportresults out/prism_results.txt,csv'
+				cmd = 'prism-4.1.beta2-linux64/bin/prism temp/prism_code.sm temp/properties_list.csl -const ' + self.pt.correct_1(parent)+'_max=1:20'+','+self.pt.correct_1(G.predecessors(parent)[0])+'_max='+str(2) + ' -exportresults temp/prism_results.txt,csv'
 				FNULL = open(os.devnull,'w')
 				subprocess.call([cmd],shell=True,stdout=FNULL)
 				FNULL.close()
@@ -226,15 +226,15 @@ class Prism_Compiler:
 			elif len(G.predecessors(parent)) == 2:
 			
 				# build prism code
-				fHandle_f = open('out/prism_code.sm','w')
-				fHandle_g = open('out/properties_list.csl','w')
+				fHandle_f = open('temp/prism_code.sm','w')
+				fHandle_g = open('temp/properties_list.csl','w')
 				fHandle_f.write(self.pt.double_blocked_module(parent,G.predecessors(parent)[0],G.predecessors(parent)[1]))
 				fHandle_g.write(self.pt.fun_build_doubleBlock_properties_list(parent,G.predecessors(parent)[0],G.predecessors(parent)[1]))
 				fHandle_f.close()
 				fHandle_g.close()
 				
 				# run prism
-				cmd = 'prism-4.1.beta2-linux64/bin/prism out/prism_code.sm out/properties_list.csl -const ' + self.pt.correct_1(parent)+'_max=1:20'+','+self.pt.correct_1(G.predecessors(parent)[0])+'_max='+str(hash_track_input_lengths[self.pt.correct_1(G.predecessors(parent)[0])])+','+self.pt.correct_1(G.predecessors(parent)[1])+'_max='+str(hash_track_input_lengths[self.pt.correct_1(G.predecessors(parent)[1])]) + ' -exportresults out/prism_results.txt,csv'
+				cmd = 'prism-4.1.beta2-linux64/bin/prism temp/prism_code.sm temp/properties_list.csl -const ' + self.pt.correct_1(parent)+'_max=1:20'+','+self.pt.correct_1(G.predecessors(parent)[0])+'_max='+str(hash_track_input_lengths[self.pt.correct_1(G.predecessors(parent)[0])])+','+self.pt.correct_1(G.predecessors(parent)[1])+'_max='+str(hash_track_input_lengths[self.pt.correct_1(G.predecessors(parent)[1])]) + ' -exportresults temp/prism_results.txt,csv'
 				FNULL = open(os.devnull,'w')
 				subprocess.call([cmd],shell=True,stdout=FNULL)
 				#subprocess.call([cmd],shell=True)
@@ -258,7 +258,7 @@ class Prism_Compiler:
 
 
 	def fun_read_prism_output(self):
-		fHandle_f = open('out/prism_results.txt','r')
+		fHandle_f = open('temp/prism_results.txt','r')
 		fHandle_g = fHandle_f.readlines()
 		
 		for str_line in fHandle_g[1:]:

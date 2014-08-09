@@ -39,7 +39,7 @@ class Track_Layout:
 		        else:
 		                self.plot_tracks(G,new_node[0],[lst_y[0],lst_x[1]],direction*-1,track_lengths)
 
-	def plot_final(self,G_refined,track_lengths):
+	def plot_final(self,G_refined,track_lengths,str_time):
 		print('Creating circuit design...')
 		import networkx as nx
 		for node in G_refined.nodes():
@@ -48,5 +48,5 @@ class Track_Layout:
 		self.plt.figure()
 		self.plot_tracks(G_refined,terminal_node,[0,0],1,track_lengths)
 		self.plt.axes().set_aspect('equal')
-		self.plt.savefig("out/track_design.png")
+		self.plt.savefig("out/"+str_time+"/track_design.png")
 		print('Done.')
