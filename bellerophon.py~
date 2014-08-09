@@ -1,5 +1,17 @@
 import sys
 
+
+#### Check folders, create them if they don't exist
+import os
+if os.path.exists('out') == False:
+	os.system('mkdir out')
+
+if os.path.exists('temp') == False:
+	os.system('mkdir temp')
+
+
+
+
 #import matplotlib.pyplot as plt # make a graph plotting function that calls this
 
 ####
@@ -27,9 +39,6 @@ pc = Prism_Compiler()
 hash_track_lengths = pc.fun_iterate_through_graph(G_topology_Digraph)
 
 print(hash_track_lengths)
-
-
-
 
 # plot final track layout
 from lib.geometry import Track_Layout
