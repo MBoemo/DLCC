@@ -3,7 +3,7 @@
 # Startup script for PRISM (Linux/Solaris)
 
 # PRISM home directory
-PRISM_DIR=/home/michael/Dropbox/Research/Andrew_Turberfield_Project/Bellerophon/prism-4.1.beta2-linux64
+PRISM_DIR=/home/azureuser/Bellerophon/prism-4.1.beta2-linux64
 
 # Default value for notification after the scipt has finished (yes/no)
 NOTIFY_DEFAULT=no
