@@ -6,6 +6,16 @@ import time
 str_time = time.strftime("date_%Y-%m-%d_time_%H-%M-%S")
 os.system('mkdir out/'+str_time)
 
+
+#### Check folders, create them if they don't exist
+import os
+if os.path.exists('out') == False:
+	os.system('mkdir out')
+
+if os.path.exists('temp') == False:
+	os.system('mkdir temp')
+
+
 #import matplotlib.pyplot as plt # make a graph plotting function that calls this
 
 ####

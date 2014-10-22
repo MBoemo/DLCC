@@ -13,8 +13,8 @@ ctmc
 const int ONE_1_max;
 
 // Intersections
-const int y_ONE_1_intersection = ONE_1_max - 1;
-const int x_ONE_1_intersection = ONE_1_max - 2;
+const int ONE_3_ONE_1_intersection = ONE_1_max - 1;
+const int ONE_2_ONE_1_intersection = ONE_1_max - 2;
 
 module ONE_1T
 
@@ -25,42 +25,42 @@ module ONE_1T
 
 	// Handle blockage
 	[ONE_1_unblocked] ONE_1_walk -> walk_rate : (ONE_1_step'=min(ONE_1_step+1,ONE_1_max));
-	[ONE_1_blocked] ((ONE_1_step < y_ONE_1_intersection) & (y_step = y_max)) | ((ONE_1_step < x_ONE_1_intersection) & (x_step = x_max)) 
+	[ONE_1_blocked] ((ONE_1_step < ONE_3_ONE_1_intersection) & (ONE_3_step = ONE_3_max)) | ((ONE_1_step < ONE_2_ONE_1_intersection) & (ONE_2_step = ONE_2_max)) 
 -> walk_rate : (ONE_1_walk'=false);
 
 endmodule
 
 //-----------------------------------------------------
 
-// Y TRACK (yT)
+// ONE_3 TRACK (ONE_3T)
 
 // Maximum track length
-const int y_max;
+const int ONE_3_max;
 
-module yT
+module ONE_3T
 	
 	// States - where we are on the track
-	y_step : [0..y_max] init 0;
+	ONE_3_step : [0..ONE_3_max] init 0;
 
 	// Walk
-	[] true -> walk_rate : (y_step'= min(y_step+1,y_max));
+	[] true -> walk_rate : (ONE_3_step'= min(ONE_3_step+1,ONE_3_max));
 
 endmodule
 
 //-----------------------------------------------------
 
-// X TRACK (xT)
+// ONE_2 TRACK (ONE_2T)
 
 // Maximum track length
-const int x_max;
+const int ONE_2_max;
 
-module xT
+module ONE_2T
 	
 	// States - where we are on the track
-	x_step : [0..x_max] init 0;
+	ONE_2_step : [0..ONE_2_max] init 0;
 
 	// Walk
-	[] true -> walk_rate : (x_step'= min(x_step+1,x_max));
+	[] true -> walk_rate : (ONE_2_step'= min(ONE_2_step+1,ONE_2_max));
 
 endmodule
 

@@ -4,7 +4,10 @@ class Graph_Tools:
 		
 		# prints the graph you hand it as a .png file in the directory specified by file_name
 
+		import matplotlib
+		matplotlib.use('pdf')
 		import matplotlib.pyplot as plt
+
 		import networkx as nx
 		
 		plt.figure()
