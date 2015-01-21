@@ -262,7 +262,7 @@ class Prism_Compiler:
 		fHandle_g = fHandle_f.readlines()
 		
 		for str_line in fHandle_g[1:]:
-			if float(str_line.split(',')[1]) < 0.05:
+			if float(str_line.split(',')[1]) < 0.15:
 				int_optimal_track_length = int(str_line.split(',')[0])
 				break
 

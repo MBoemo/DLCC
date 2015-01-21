@@ -10,7 +10,7 @@ class Inputs:
 		from sympy import symbols
 		from sympy import sympify
 		from sympy.logic import simplify_logic
-		from pyparsing import nestedExpr # 
+		from pyparsing import nestedExpr 
 
 		print('Condensing Boolean logic expression...')
 		tree_xml = self.ET.parse(str_cmd_arg) # takes the xml file specified on the command line and parses it into a tree

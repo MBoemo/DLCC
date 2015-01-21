@@ -1,1 +1,1 @@
-P=? [ F (ONE_3_step=ONE_3_max)&(ONE_1_step>=ONE_3_ONE_1_intersection)  | (ONE_3_step=ONE_2_max)&(ONE_1_step>=ONE_2_ONE_1_intersection) ]
+P=? [ F (ONE_2_step=ONE_2_max)&(ONE_4_step>=ONE_2_ONE_4_intersection) ]

@@ -11,6 +11,7 @@ class Topology:
 
 	def fun_gate_topology(self,G_topology_Digraph,inputs,outputs,node,int_counter):
 		str_gate_type = node.translate(None,'0')
+		print(str_gate_type)
 		if str_gate_type == 'Not':
 		        G_topology_Digraph.add_edge(inputs[0],'1_'+str(int_counter))
 			if outputs:
@@ -32,6 +33,18 @@ class Topology:
 				G_topology_Digraph.add_edge(inputs[1],outputs[0])
 			G_topology_Digraph.remove_node(node)
 		        int_counter = int_counter + 1
+		if str_gate_type == 'Fanout':
+			print('recognised')
+			G_topology_Digraph.add_edge(inputs[0],'1_'+str(int_counter))                 # input -> 1_1
+                	G_topology_Digraph.add_edge(inputs[0],'1_'+str(int_counter+1))               # input -> 1_2
+                	G_topology_Digraph.add_edge('1_'+str(int_counter),'1_'+str(int_counter+2))   # 1_1   -> 1_3
+                	G_topology_Digraph.add_edge('1_'+str(int_counter+1),'1_'+str(int_counter+3)) # 1_2   -> 1_4             
+			if outputs:
+				G_topology_Digraph.add_edge('1_'+str(int_counter+2),output[0])
+				G_topology_Digraph.add_edge('1_'+str(int_counter+3),output[0])
+			G_topology_Digraph.remove_node(node)			
+			int_counter = int_counter + 4
+
 		return int_counter
 
 	
@@ -45,7 +58,7 @@ class Topology:
 		
 		int_counter = 1
 		for node in reversed(G_topology_Digraph.nodes()): # you have to go from the bottom up on the tree - but just reversing the list may not always work.  need to confirm this is okay
-			if node.translate(None,'0') in ['And','Or','Not']: # if one of the nodes in the graph is a logic gate...
+			if node.translate(None,'0') in ['And','Or','Not','Fanout']: # if one of the nodes in the graph is a logic gate...
 
 				int_counter = self.fun_gate_topology(G_topology_Digraph,G_topology_Digraph.predecessors(node),G_topology_Digraph.successors(node),node,int_counter) # replace it with the appropriate track topology
 		

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BellerophonParameters>
+
+	<LogicArguments>
+		<Symbols>x</Symbols>
+		<Equation>Fanout(x)</Equation>		
+	</LogicArguments>	
+	
+	<Topology>
+		<Display_Topology>no</Display_Topology>
+		<File_Extension>.png</File_Extension>		
+	</Topology>
+	
+	<ModelChecking>
+		<PathToPrism>prism-4.1.beta2-linux64/bin/prism</PathToPrism> <!-- /home/boemo/Downloads/prism-4.1.beta2-linux64/bin/prism -->
+		<InitialiseLength>1</InitialiseLength>
+		<MaxErrTolerance>0.10</MaxErrTolerance>
+	</ModelChecking>
+	
+	<ProximityErrors>
+		<ProximityErrTolerance> </ProximityErrTolerance>
+		<OneSpace> </OneSpace>
+		<TwoSpace> </TwoSpace>
+		<ThreeSpace> </ThreeSpace>
+	</ProximityErrors>
+
+	
+</BellerophonParameters>
+

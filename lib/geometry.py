@@ -21,7 +21,6 @@ class Track_Layout:
 		# look up intersections
 		# if > 1, reverse
 
-
 		if direction == -1:
 		        self.plt.scatter(lst_y,lst_x,s=area,alpha=0.5)
 		        self.plt.arrow(lst_y[-1],lst_x[-1],0,-int_length+1,head_width=0.2,head_length=0.2,fc='g',ec='g',length_includes_head=True)
@@ -31,6 +30,7 @@ class Track_Layout:
 		        self.plt.arrow(lst_x[-1],lst_y[-1],-int_length+1,0,head_width=0.2,head_length=0.2,fc='g',ec='g',length_includes_head=True)
 		        self.plt.text(lst_x[-1],lst_y[-1],node,size='xx-large')
 		new_node = G.predecessors(node)
+
 
 		if new_node:
 		        if len(new_node) == 2:
