@@ -1,9 +1,0 @@
-Bellerophon
-
-Dependencies:
-- sympy
-- xml.etree.ElementTree
-- pyparsing
-- networkx
-- matplotlib
-
