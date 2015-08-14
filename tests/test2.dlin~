@@ -1,10 +1,10 @@
 ## test2.dlin
 ## Description: Designs track layout for the propositional formula '(¬x & ¬y) | (¬x & ¬z)' with a
-## Missed Chance Error Tolerance of P(error) = 0.25 at each junction
+## Missed Chance Error Tolerance of P(error) = 0.15 at each junction
 
 symbols=x y z
 formula=(~x & ~y) | (~x & ~z)		
 
 pathToPrism=/home/boemo/prism-4.1.beta2-linux64/bin/prism
 trivial_length=2
-MCE_tolerance=0.25
+MCE_tolerance=0.2

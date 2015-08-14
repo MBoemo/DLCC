@@ -5,11 +5,10 @@ class Graph_Tools:
 		# prints the graph you hand it as a .png file in the directory specified by file_name
 
 		import matplotlib
-		matplotlib.use('pdf')
 		import matplotlib.pyplot as plt
-
 		import networkx as nx
 		
+
 		plt.figure()
 		pos=nx.spring_layout(graph,iterations=10)
 		nx.draw(graph,pos,node_size=0,alpha=0.4,edge_color='r',font_size=16)

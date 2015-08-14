@@ -3,7 +3,7 @@
 ## Missed Chance Error Tolerance of P(error) = 0.1 at each junction
 
 symbols=x
-formula=~x		
+formula=¬x		
 
 pathToPrism=/home/boemo/prism-4.1.beta2-linux64/bin/prism
 trivial_length=2

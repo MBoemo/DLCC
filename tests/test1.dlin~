@@ -5,7 +5,7 @@
 symbols=x y z
 formula=(x & y) | (x & z)		
 
-pathToPrism=prism-4.1.beta2-linux64/bin/prism
-trivial_length=1
-MCE_tolerance=0.10
+pathToPrism=/home/boemo/prism-4.1.beta2-linux64/bin/prism
+trivial_length=2
+MCE_tolerance=-1
 

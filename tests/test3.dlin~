@@ -1,6 +1,6 @@
 ## test3.dlin
 ## Description: Designs track layout for the propositional formula '(¬x & y) | z' with a
-## Missed Chance Error Tolerance of P(error) = 0.5 at each junction
+## Missed Chance Error Tolerance of P(error) = 0.2 at each junction
 
 symbols=x y z
 formula=(~x & y) | z		
