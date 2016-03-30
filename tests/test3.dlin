@@ -5,6 +5,6 @@
 symbols=x y z
 formula=(~x & y) | z		
 
-pathToPrism=/home/boemo/prism-4.1.beta2-linux64/bin/prism
+pathToPrism=/Users/Boemo/Documents/prism-4.3.beta-osx64/bin/prism
 trivial_length=2
-MCE_tolerance=0.5
+MCE_tolerance=0.2

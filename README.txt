@@ -19,6 +19,12 @@ Input files are given the .dlin extension.
 Output files will be saved to a timestamped directory in the "out" folder.
 
 
+######################################################
+#   Compatibility Between PRISM and OSX El Capitan   #
+######################################################
+This bug has nothing to do with DLCC, other but is just a compatibility issue bewteen PRISM and Mac OSX El Capitan.  After installing PRISM using the install.sh script, you may get a 'Library not loaded: ../../lib/libdd.dylib' error.  This can occur when PRISM looks for java in the wrong place.  To fix it, run 'locate java' in the terminal and copy the path of your java directory.  Open the prism script (located in the bin directory) and change the value of the PRISM_JAVA variable to the correct directory.  For me, it's 'PRISM_JAVA=/Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/bin/java'.  That should fix it.  There's more information on this bug at http://stackoverflow.com/questions/33033283/prism-model-checker-library-not-loaded-lib-libdd-dylib-after-upgrading-t.
+
+
 ################
 #   Precision  #
 ################

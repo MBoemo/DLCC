@@ -21,15 +21,15 @@ class cls_digraph_formula:
 
 	def fun_recursive_add_to_logic_graph(self,lst_nested_logic_statement,parent_Name,lst_all_parent_names,G_nested_formula):
 
-		if ',' not in lst_nested_logic_statement[-1]:
-			if len(lst_nested_logic_statement) == 2:
+		if ',' not in lst_nested_logic_statement[-1]: #terminating case for the recursion
+			if len(lst_nested_logic_statement) == 2: #if there are two arguments...
 				key = lst_nested_logic_statement[-1]
 				if len(key) == 2:
 					G_nested_formula.add_edge(key[0][0],parent_Name)
 					G_nested_formula.add_edge(key[1],parent_Name)
 				else:
 					G_nested_formula.add_edge(key[0],parent_Name)
-
+		
 		else:
 			comma_index = lst_nested_logic_statement[1].index(',')
 			first_partition = lst_nested_logic_statement[1][0:comma_index]
@@ -47,6 +47,8 @@ class cls_digraph_formula:
 		import networkx as nx
 		from lib.graph_tools import Graph_Tools
 		gt = Graph_Tools()
+		import matplotlib.pyplot as plt
+
 
 		G_nested_formula = nx.MultiDiGraph()
 		G_nested_formula.add_node(str(lst_nested_logic_statement[0][0])) # add the first parent to the graph
@@ -56,5 +58,5 @@ class cls_digraph_formula:
 		self.fun_recursive_add_to_logic_graph(lst_nested_logic_statement[0],parent_Name,lst_all_parent_names,G_nested_formula) # call the recursive funciton until we're done
 	
 		gt.fun_save_graph(G_nested_formula,'nested_logic_statement',str_time)
-
+		
 		return G_nested_formula

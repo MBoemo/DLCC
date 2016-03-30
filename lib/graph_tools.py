@@ -10,8 +10,7 @@ class Graph_Tools:
 		
 
 		plt.figure()
-		pos=nx.spring_layout(graph,iterations=10)
-		nx.draw(graph,pos,node_size=0,alpha=0.4,edge_color='r',font_size=16)
+		nx.draw_spring(graph,node_color='w',with_labels=True,node_size=1000,arrows=True)
 		plt.savefig("out/" + str_time + "/%(pHolder_file_name)s" %dict(pHolder_file_name = file_name))
 		
 		print('Saved graph '+"out/" + str_time + "/%(file_name)s" %dict(file_name = file_name))
